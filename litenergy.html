@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LitEnergyTeam | GOD MODE ONLINE</title>
+    <style>
+        :root {
+            --neon-orange: #ff4500;
+            --neon-lime: #a6ff00;
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff0055;
+            --bg-dark: #010102;
+            --panel-bg: rgba(4, 4, 6, 0.8);
+            --cyber-glow: 0 0 20px var(--neon-orange);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Black', Impact, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            perspective: 1500px;
+            transition: background 0.3s;
+        }
+
+        body.god-mode-active {
+            background: #050002;
+            animation: screen-shake 0.1s infinite alternate;
+        }
+
+        /* Интерактивный бэкграунд */
+        #energy-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+        }
+
+        /* Кибер-сетка монитора */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+            background-size: 100% 4px, 6px 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Навигация будущего */
+        .nav-tabs {
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(60px);
+            display: flex;
+            gap: 6px;
+            background: #000;
+            padding: 6px;
+            border-radius: 20px;
+            border: 2px solid var(--neon-orange);
+            z-index: 10;
+            box-shadow: var(--cyber-glow);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #444;
+            padding: 12px 24px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            font-weight: 900;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 69, 0, 0.15);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--neon-orange), var(--neon-magenta));
+            color: #fff;
+            box-shadow: 0 0 20px var(--neon-magenta);
+        }
+
+        /* Главная квантовая платформа */
+        .container {
+            width: 92%;
+            max-width: 460px;
+            padding: 65px 35px 35px;
+            text-align: center;
+            z-index: 2;
+            background: var(--panel-bg);
+            border-radius: 40px;
+            border: 2px solid rgba(255, 69, 0, 0.2);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            box-shadow: 0 60px 120px rgba(0,0,0,0.95);
+            transform-style: preserve-3d;
+            position: relative;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Хроматический контур при наведении */
+        .container:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 60px 130px rgba(0,0,0,0.95), 0 0 50px rgba(0, 243, 255, 0.2);
+        }
+
+        body.god-mode-active .container {
+            border-color: var(--neon-magenta) !important;
+            box-shadow: 0 0 60px rgba(255, 0, 85, 0.4), inset 0 0 30px rgba(255, 0, 85, 0.2) !important;
+        }
+
+        /* Лазерное сканирование */
+        .laser-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            animation: scan 3.5s linear infinite;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .tab-content {
+            display: none;
+            animation: hyperDrive 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            transform: translateZ(30px);
+        }
+
+        .tab-content.active { display: block; }
+
+        @keyframes hyperDrive {
+            from { opacity: 0; transform: translateZ(10px) scale(0.9) translateY(15px); filter: brightness(2) blur(8px); }
+            to { opacity: 1; transform: translateZ(30px) scale(1) translateY(0); filter: brightness(1) blur(0); }
+        }
+
+        /* Ядро Реактора (Лого) */
+        .logo-box {
+            position: relative;
+            width: 160px; height: 160px;
+            margin: 0 auto 30px;
+            display: flex; justify-content: center; align-items: center;
+            transform: translateZ(65px);
+        }
+
+        .logo-glow {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle, var(--neon-magenta) 0%, var(--neon-cyan) 70%);
+            border-radius: 40% 60% 50% 50% / 50% 40% 60% 50%;
+            animation: morph 3s ease-in-out infinite alternate;
+            filter: blur(25px);
+            opacity: 0.6;
+        }
+
+        .logo {
+            width: 115px; height: 115px;
+            background: #000;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 2.7rem;
+            color: #fff;
+            text-shadow: 0 0 20px var(--neon-orange);
+            box-shadow: inset 0 0 30px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.9);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Сверхобъемный Глитч-Заголовок */
+        h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin-bottom: 5px;
+            position: relative;
+            transform: translateZ(50px);
+            color: #fff;
+        }
+
+        .container:hover h1 {
+            animation: glitch-text 0.3s infinite;
+        }
+
+        .tagline {
+            font-family: -apple-system, sans-serif;
+            color: #fff;
+            font-size: 0.85rem;
+            margin-bottom: 35px;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-shadow: 0 0 10px var(--neon-lime);
+            transform: translateZ(40px);
+        }
+
+        /* Главный Портал (Кнопка) */
+        .tg-btn {
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; padding: 25px;
+            background: linear-gradient(90deg, var(--neon-orange), #ff6a00);
+            color: #000;
+            text-decoration: none; font-size: 1.35rem;
+            border-radius: 22px; overflow: hidden;
+            box-shadow: 0 15px 45px rgba(255, 69, 0, 0.4);
+            transform: translateZ(55px);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+        }
+
+        .tg-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+            transition: 0.4s;
+        }
+        .tg-btn:hover::before { left: 100%; }
+
+        .tg-btn:hover {
+            transform: translateZ(75px) scale(1.04);
+            background: linear-gradient(90deg, var(--neon-lime), #99ff00);
+            box-shadow: 0 20px 50px rgba(166, 255, 0, 0.6);
+        }
+
+        .tg-btn svg { width: 30px; height: 30px; margin-right: 15px; fill: #000; }
+
+        /* Защищенный Кибер-Контейнер данных */
+        .info-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-left: 5px solid var(--neon-orange);
+            padding: 22px; text-align: left;
+            border-radius: 8px 24px 24px 8px;
+        }
+        .info-card p { font-family: -apple-system, sans-serif; font-size: 0.95rem; color: #d1d1d1; line-height: 1.6; }
+
+        /* Состав Пачки */
+        .team-grid { display: flex; flex-direction: column; gap: 16px; }
+        .team-member {
+            display: flex; align-items: center; gap: 20px;
+            background: rgba(10, 10, 12, 0.8);
+            padding: 20px 24px; border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.02);
+            transition: all 0.25s ease;
+            transform: translateZ(10px);
+        }
+        .team-member::before {
+            content: ''; position: absolute; left: 0; top: 0; width: 5px; height: 100%;
+            background: var(--neon-orange); opacity: 0.4;
+        }
+        .team-member:hover {
+            background: rgba(255, 69, 0, 0.05);
+            border-color: rgba(255, 69, 0, 0.4);
+            transform: translateX(10px) translateZ(30px);
+            box-shadow: -10px 10px 25px rgba(255, 69, 0, 0.15);
+        }
+        .team-member.emperor::before { background: var(--neon-lime); }
+        .team-member.emperor:hover {
+            background: rgba(166, 255, 0, 0.05);
+            border-color: var(--neon-lime);
+            box-shadow: -10px 10px 25px rgba(166, 255, 0, 0.15);
+        }
+
+        .member-avatar {
+            width: 65px; height: 65px; border-radius: 50%; background: #000;
+            border: 2px solid var(--neon-orange);
+            display: flex; justify-content: center; align-items: center; font-size: 1.6rem;
+        }
+        .team-member.emperor .member-avatar { border-color: var(--neon-lime); }
+        .member-info h3 { font-size: 1.35rem; color: #fff; }
+        .member-info p { font-family: -apple-system, sans-serif; font-size: 0.85rem; color: #555; margin-top: 4px; }
+
+        /* Вкладка ТТХ */
+        .specs-list { display: flex; flex-direction: column; gap: 14px; text-align: left; }
+        .spec-item {
+            background: rgba(0,0,0,0.6); padding: 20px; border-radius: 18px;
+            border-bottom: 3px solid var(--neon-cyan);
+        }
+        .spec-item h4 { font-size: 1rem; color: var(--neon-cyan); margin-bottom: 6px; }
+        .spec-item p { font-family: -apple-system, sans-serif; font-size: 0.9rem; color: #888; line-height: 1.6; }
+
+        /* Кнопка Режима Бога */
+        .turbo-panel {
+            margin-top: 30px; padding: 15px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 2px dashed rgba(255,255,255,0.08);
+            border-radius: 16px; cursor: pointer;
+            font-size: 0.8rem; letter-spacing: 3px; color: #444;
+            transition: all 0.3s ease;
+            transform: translateZ(20px);
+        }
+        .turbo-panel:hover { color: var(--neon-cyan); border-color: var(--neon-cyan); }
+        .turbo-panel.active {
+            color: #000; background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            border-style: solid; box-shadow: 0 0 30px var(--neon-magenta);
+            font-weight: bold; animation: pulseGlow 0.4s infinite alternate;
+        }
+
+        @keyframes pulseGlow { 0% { opacity: 0.9; } 100% { opacity: 1; } }
+        @keyframes morph { 0% { border-radius: 35% 65% 60% 40% / 40% 40% 60% 60%; } 100% { border-radius: 60% 40% 40% 60% / 60% 35% 65% 40%; } }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(4deg); } }
+        
+        @keyframes screen-shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            100% { transform: translate(-1px, -1px) rotate(0.5deg); }
+        }
+        @keyframes glitch-text {
+            0% { transform: translate(0); text-shadow: 2px -2px var(--neon-magenta), -2px 2px var(--neon-cyan); }
+            50% { transform: translate(-2px, 2px); text-shadow: -3px 2px var(--neon-orange), 3px -2px var(--neon-lime); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanlines"></div>
+    <canvas id="energy-canvas"></canvas>
+
+    <div class="container" id="main-card">
+        <div class="laser-line"></div>
+        
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('main')">Главная</button>
+            <button class="tab-btn" onclick="switchTab('team')">Состав</button>
+            <button class="tab-btn" onclick="switchTab('info')">Инфо</button>
+        </div>
+
+        <div id="tab-main" class="tab-content active">
+            <div class="logo-box">
+                <div class="logo-glow"></div>
+                <div class="logo">LIT</div>
+            </div>
+
+            <h1>LitEnergyTeam</h1>
+            <div class="tagline">[ ТОЛЬКО МАКСИМУМ ]</div>
+
+            <a href="https://t.me/+ZFVaOsIMsy4xMjky" class="tg-btn" target="_blank" onmouseenter="playSynth(300, 'square', 0.15)">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .34z"/>
+                </svg>
+                ВОРВАТЬСЯ В КАНАЛ
+            </a>
+
+            <div class="info-card">
+                <p>Заряжаем контентом на 100%. Никакой воды — только чистая энергия, эксклюзивные инсайды и мощное движение. Ты с нами?</p>
+            </div>
+        </div>
+
+        <div id="tab-team" class="tab-content">
+            <h2 style="font-size: 1.8rem; margin-bottom: 25px; text-transform: uppercase; color: var(--neon-orange);">Энерго-Ядро</h2>
+            <div class="team-grid">
+                <div class="team-member emperor">
+                    <div class="member-avatar">👑</div>
+                    <div class="member-info">
+                        <h3>Император Литвин</h3>
+                        <p>Глава прайда / Главный по топливу</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">⚡</div>
+                    <div class="member-info">
+                        <h3>Санечка</h3>
+                        <p>Железная опора / Контроль разгона</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-avatar">🔥</div>
+                    <div class="member-info">
+                        <h3>Родные</h3>
+                        <p>Фундамент, Семья и вечный двигатель движения</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-info" class="tab-content">
+            <h2 style="font-size: 1.8rem; margin-bottom: 25px; text-transform: uppercase; color: var(--neon-cyan);">Системные Спеки</h2>
+            <div class="specs-list">
+                <div class="spec-item">
+                    <h4>[01] Идеология</h4>
+                    <p>Ни шагу назад. Создаем контент, который заставляет пульс биться на пределе возможностей.</p>
+                </div>
+                <div class="spec-item">
+                    <h4>[02] Синхронизация</h4>
+                    <p>Прямая связь с Родными 24 на 7 через главную энерго-артерию (Telegram).</p>
+                </div>
+                <div class="spec-item">
+                    <h4>[03] КПД Проекта</h4>
+                    <p>Выход за рамки стандартных медиа. Чистая производительность, ноль пустых слов.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="turbo-panel" id="turbo-toggle" onclick="toggleGodMode()">
+            [ РЕЖИМ БОГА: ВЫКЛ ]
+        </div>
+
+    </div>
+
+    <script>
+        // --- Аналоговый Аудио-Движок будущего ---
+        let audioCtx = null;
+        function playSynth(freq, type, duration, endFreq = null) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                if(endFreq) osc.frequency.exponentialRampToValueAtTime(endFreq, audioCtx.currentTime + duration);
+                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {}
+        }
+
+        function switchTab(tabName) {
+            playSynth(150, 'sawtooth', 0.2, 50); // Глубокий аналоговый дроп-бас
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+
+        // --- Ультимативный Режим Бога ---
+        let godMode = false;
+        function toggleGodMode() {
+            godMode = !godMode;
+            const btn = document.getElementById('turbo-toggle');
+            if (godMode) {
+                btn.innerText = "[ GOD MODE: ACTIVE ]";
+                btn.classList.add('active');
+                document.body.classList.add('god-mode-active');
+                playSynth(80, 'sawtooth', 0.5, 400);
+            } else {
+                btn.innerText = "[ РЕЖИМ БОГА: ВЫКЛ ]";
+                btn.classList.remove('active');
+                document.body.classList.remove('god-mode-active');
+                playSynth(300, 'triangle', 0.2, 100);
+            }
+        }
+
+        // --- Высокопроизводительный Холст Энерго-Лучей ---
+        const canvas = document.getElementById('energy-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 1.6;
+                this.speedY = (Math.random() - 0.5) * 1.6;
+                this.color = Math.random() > 0.4 ? '#ff4500' : '#a6ff00';
+            }
+            update() {
+                let speedMultiplier = godMode ? 12 : 1;
+
+                if (mouse.x != null && mouse.y != null) {
+                    let dx = this.x - mouse.x;
+                    let dy = this.y - mouse.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        let force = (mouse.radius - dist) / mouse.radius;
+                        this.x += (dx / dist) * force * 5;
+                        this.y += (dy / dist) * force * 5;
+                    }
+                }
+                this.x += this.speedX * speedMultiplier;
+                this.y += this.speedY * speedMultiplier;
+
+                if (this.x > canvas.width) this.x = 0; else if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0; else if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = godMode ? (Math.random() > 0.5 ? '#00f3ff' : '#ff0055') : this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, godMode ? this.size * 1.5 : this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            let count = (canvas.width * canvas.height) / 14000;
+            for (let i = 0; i < Math.min(count, 120); i++) particles.push(new Particle());
+        }
+
+        function connectParticles() {
+            let maxDist = godMode ? 180 : 110;
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let dx = particles[a].x - particles[b].x;
+                    let dy = particles[a].y - particles[b].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < maxDist) {
+                        let opacity = (1 - (dist / maxDist)) * (godMode ? 0.5 : 0.2);
+                        ctx.strokeStyle = godMode ? `rgba(255, 0, 85, ${opacity})` : (particles[a].color === '#ff4500' ? `rgba(255,69,0,${opacity})` : `rgba(166,255,0,${opacity})`);
+                        ctx.lineWidth = godMode ? 2.5 : 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = godMode ? 'rgba(10, 0, 4, 0.4)' : 'rgba(1, 1, 2, 0.25)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+
+        // --- 3D Параллакс-Физика Платформы ---
+        const card = document.getElementById('main-card');
+        document.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const cardCenterX = rect.left + rect.width / 2;
+            const cardCenterY = rect.top + rect.height / 2;
+            const angleX = -(e.clientY - cardCenterY) / 12; 
+            const angleY = (e.clientX - cardCenterX) / 12;
+
+            card.style.transform = `rotateX(${Math.max(-20, Math.min(20, angleX))}deg) rotateY(${Math.max(-20, Math.min(20, angleY))}deg)`;
+            card.style.transition = 'transform 0.05s ease';
+        });
+        
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            card.style.transition = 'transform 0.7s ease';
+        });
+    </script>
+</body>
+</html>
